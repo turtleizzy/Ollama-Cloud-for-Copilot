@@ -193,6 +193,15 @@ const SNAPSHOT_MODELS: readonly SnapshotModelDefinition[] = [
     toolCalling: true,
   },
   {
+    apiModel: "glm-5.2",
+    family: "glm",
+    maxInputTokens: 1000000,
+    maxOutputTokens: 131072,
+    imageInput: false,
+    toolCalling: true,
+    reasoning: true,
+  },
+  {
     apiModel: "gpt-oss:120b",
     family: "gpt-oss",
     maxInputTokens: 131072,
@@ -223,6 +232,15 @@ const SNAPSHOT_MODELS: readonly SnapshotModelDefinition[] = [
     maxOutputTokens: 262144,
     imageInput: true,
     toolCalling: true,
+  },
+  {
+    apiModel: "kimi-k2.7-code",
+    family: "kimi",
+    maxInputTokens: 262144,
+    maxOutputTokens: 262144,
+    imageInput: true,
+    toolCalling: true,
+    reasoning: true,
   },
   {
     apiModel: "kimi-k2:1t",
@@ -277,6 +295,15 @@ const SNAPSHOT_MODELS: readonly SnapshotModelDefinition[] = [
     reasoning: true,
   },
   {
+    apiModel: "minimax-m3",
+    family: "minimax",
+    maxInputTokens: 524288,
+    maxOutputTokens: 131072,
+    imageInput: true,
+    toolCalling: true,
+    reasoning: true,
+  },
+  {
     apiModel: "ministral-3:14b",
     family: "ministral",
     maxInputTokens: 262144,
@@ -323,6 +350,15 @@ const SNAPSHOT_MODELS: readonly SnapshotModelDefinition[] = [
     maxOutputTokens: 65536,
     imageInput: false,
     toolCalling: true,
+  },
+  {
+    apiModel: "nemotron-3-ultra",
+    family: "nemotron",
+    maxInputTokens: 262144,
+    maxOutputTokens: 131072,
+    imageInput: false,
+    toolCalling: true,
+    reasoning: true,
   },
   {
     apiModel: "qwen3.5:397b",
@@ -672,12 +708,19 @@ function inferMaxInputTokens(id: string): number {
     id.startsWith("kimi-") ||
     id.startsWith("ministral-") ||
     id.startsWith("mistral-large-") ||
+    id.startsWith("nemotron-3-ultra") ||
     id.startsWith("qwen")
   ) {
     return 262144;
   }
+  if (id.startsWith("glm-5.2")) {
+    return 1000000;
+  }
   if (id.startsWith("glm-")) {
     return 202752;
+  }
+  if (id.startsWith("minimax-m3")) {
+    return 524288;
   }
   if (id.startsWith("minimax-")) {
     return 204800;
@@ -702,7 +745,11 @@ function inferMaxOutputTokens(id: string): number {
   if (id.startsWith("deepseek-v4-")) {
     return 384000;
   }
-  if (id.startsWith("devstral-") || id.startsWith("mistral-large-")) {
+  if (
+    id.startsWith("devstral-") ||
+    id.startsWith("kimi-") ||
+    id.startsWith("mistral-large-")
+  ) {
     return 262144;
   }
   if (id.startsWith("deepseek-v3.1")) {
@@ -716,7 +763,8 @@ function inferMaxOutputTokens(id: string): number {
     id.startsWith("glm-") ||
     id.startsWith("minimax-") ||
     id.startsWith("qwen3-vl:235b-instruct") ||
-    id.startsWith("nemotron-3-nano")
+    id.startsWith("nemotron-3-nano") ||
+    id.startsWith("nemotron-3-ultra")
   ) {
     return 131072;
   }
@@ -750,6 +798,8 @@ function inferImageInput(id: string): boolean {
     id.startsWith("gemma4:") ||
     id.startsWith("kimi-k2.5") ||
     id.startsWith("kimi-k2.6") ||
+    id.startsWith("kimi-k2.7") ||
+    id.startsWith("minimax-m3") ||
     id.startsWith("ministral-") ||
     id.startsWith("mistral-large-") ||
     id.startsWith("devstral-small-2")
@@ -794,6 +844,7 @@ function inferReasoning(id: string): boolean {
   if (
     id.startsWith("kimi-k2.5") ||
     id.startsWith("kimi-k2.6") ||
+    id.startsWith("kimi-k2.7") ||
     id.startsWith("kimi-k2-thinking")
   ) {
     return true;
