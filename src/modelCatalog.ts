@@ -259,6 +259,15 @@ const SNAPSHOT_MODELS: readonly SnapshotModelDefinition[] = [
     toolCalling: true,
   },
   {
+    apiModel: "kimi-k3",
+    family: "kimi",
+    maxInputTokens: 1048576,
+    maxOutputTokens: 262144,
+    imageInput: true,
+    toolCalling: true,
+    reasoning: true,
+  },
+  {
     apiModel: "minimax-m2",
     family: "minimax",
     maxInputTokens: 204800,
